@@ -1,0 +1,74 @@
+import React, { Component } from 'react';
+import './App.css';
+
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      message: "Ready",
+      count: 0,
+      theme: "Secondary"
+    }
+    this.handleEvent = this.handleEvent.bind(this);
+  }
+  handleEvent = (event) => {
+    if (event.type === "mousedown") {
+      this.setState({ message: "Ku" });
+    } else {
+      this.setState({ message: "Up" })
+    }
+    // this.setState({ message: "Hanako" });
+  }
+  handleEvent1 = (event) => {
+    event.persist();
+    this.setState({ count: this.state.count + 1 },
+      () => this.setState({ message: `${event.type}: ${this.state.count}` }));
+  }
+
+  handleEvent2 = (event) => {
+    event.persist();
+    this.setState({
+      counter: this.state.count + 1,
+      theme: event.target.innerText === "Normal" ? "primary" : "danger"
+    }, () => this.setState({ message: `${event.type}: ${this.state.count}` }));
+  }
+  handleEvent3 = (event, newTheme) => {
+    event.persist();
+    this.setState({
+      counter: this.state.count + 1,
+      theme: newTheme
+    }, () => this.setState({ message: `${event.type}: ${this.state.count}` }));
+  }
+  toggleCheckBox = (event) => {
+    if (this.state.count === 0) {
+      event.preventDefault();
+    }
+  }
+  render() {
+    return (
+      <div className="m-2">
+        <div className="form-check">
+          <input className="form-check-input" type="checkbox"
+            onClick={this.toggleCheckBox} />
+          <label>This is a checkbox</label>
+        </div>
+        <div className={`h4 bg-${this.state.theme}
+      text-white text-center p-2`}>
+          {this.state.message}
+        </div>
+        <div className="text-center">
+          <button className="btn btn-primary"
+            onClick={(e) => this.handleEvent3(e, "primary")} >
+            Normal
+        </button>
+          <button className="btn btn-danger m-1"
+            onClick={(e) => this.handleEvent3(e, "danger")} >
+            Danger
+        </button>
+        </div>
+      </div>
+    );
+  }
+}
+
+export default App;
